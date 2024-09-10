@@ -3,7 +3,10 @@ import AppError from '../../errors/AppError';
 import { TCategory } from './category.interface';
 import { Category } from './category.model';
 
-const getAllCategoriesFromDB = async () => {};
+const getAllCategoriesFromDB = async () => {
+  const result = await Category.find();
+  return result;
+};
 
 const createCategoryIntoDB = async (payload: TCategory) => {
   const isNameAvailable = await Category.findOne({ name: payload.name });
