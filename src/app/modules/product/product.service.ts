@@ -2,11 +2,28 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { Product } from './product.model';
 import { TProduct } from './product.interface';
+import QueryBuilder from '../../builder/QueryBuilder';
 
-const getAllProductsFromDB = async () => {
-  const result = await Product.find();
+const createProductIntoDB = async (payload: TProduct) => {
+  const isProductExist = await Product.findOne({ name: payload.name });
+
+  if (isProductExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product already exist');
+  }
+  const result = await Product.create(payload);
   return result;
 };
+const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+  const productsQuery = new QueryBuilder(Product.find(), query)
+    .search()
+    .filter()
+    .paginate()
+    .fields();
+  const result = await productsQuery.modelQuery;
+
+  return result;
+};
+
 const getSingleProductFromDB = async (id: string) => {
   const isProductExist = await Product.findById(id);
 
@@ -45,6 +62,7 @@ const deleteProductFromDB = async (id: string) => {
 };
 
 export const ProductServices = {
+  createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateProductIntoDB,

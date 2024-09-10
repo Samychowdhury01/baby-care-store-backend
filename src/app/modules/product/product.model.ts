@@ -32,7 +32,7 @@ const productSchema = new Schema<TProduct>(
     },
   },
   {
-    timestamps: true,
+    timestamps: true
   },
 );
 

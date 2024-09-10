@@ -5,8 +5,10 @@ const router = Router()
 
 // get all product
 router.get('/', ProductControllers.getProducts);
+// get flash sale products
+router.post('/', ProductControllers.createProduct)
 // get product by id
-router.post('/', ProductControllers.getProductById);
+router.get('/', ProductControllers.getProductById);
 // update product Info
 router.put('/', ProductControllers.updateProduct);
 // delete Product
