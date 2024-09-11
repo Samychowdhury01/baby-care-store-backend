@@ -3,6 +3,7 @@ import AppError from '../../errors/AppError';
 import { Product } from './product.model';
 import { TProduct } from './product.interface';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { Category } from '../category/category.model';
 
 const createProductIntoDB = async (payload: TProduct) => {
   const isProductExist = await Product.findOne({ name: payload.name });
@@ -10,17 +11,23 @@ const createProductIntoDB = async (payload: TProduct) => {
   if (isProductExist) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Product already exist');
   }
+  const category = await Category.findById(payload.categoryId)
+  if(!category){
+    throw new AppError(httpStatus.BAD_REQUEST, 'Category not found')
+  }
+
   const result = await Product.create(payload);
   return result;
 };
+
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+  
   const productsQuery = new QueryBuilder(Product.find(), query)
     .search()
     .filter()
     .paginate()
     .fields();
   const result = await productsQuery.modelQuery;
-
   return result;
 };
 

@@ -1,4 +1,4 @@
-import { FilterQuery, Query } from 'mongoose';
+import { FilterQuery, Query, Types } from 'mongoose';
 
 class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
@@ -45,11 +45,16 @@ class QueryBuilder<T> {
 
     excludeFields.forEach((el) => delete queryObj[el]);
 
+    if (queryObj.categoryId) {
+      this.modelQuery = this.modelQuery.find({
+        categoryId: new Types.ObjectId(queryObj.categoryId as string),
+      } as FilterQuery<T>);
+    }
+    
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
 
     return this;
   }
-
 
   paginate() {
     const page = Number(this?.query?.page) || 1;

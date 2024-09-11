@@ -40,15 +40,15 @@ productSchema.post('save', async function (doc: any, next) {
   delete doc._doc.isDeleted;
   next();
 });
-// pre hook to filter out deleted document
-productSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
-  next();
-});
-// pre hook to filter out deleted document
-productSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
-  next();
-});
+// // pre hook to filter out deleted document
+// productSchema.pre('find', function (next) {
+//   this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
+//   next();
+// });
+// // pre hook to filter out deleted document
+// productSchema.pre('findOne', function (next) {
+//   this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
+//   next();
+// });
 
 export const Product = model<TProduct>('Product', productSchema);
