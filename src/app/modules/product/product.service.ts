@@ -11,9 +11,9 @@ const createProductIntoDB = async (payload: TProduct) => {
   if (isProductExist) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Product already exist');
   }
-  const category = await Category.findById(payload.categoryId)
-  if(!category){
-    throw new AppError(httpStatus.BAD_REQUEST, 'Category not found')
+  const category = await Category.findById(payload.categoryId);
+  if (!category) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Category not found');
   }
 
   const result = await Product.create(payload);
@@ -21,8 +21,26 @@ const createProductIntoDB = async (payload: TProduct) => {
 };
 
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
-  
-  const productsQuery = new QueryBuilder(Product.find(), query)
+  const url = `/${query.categoryUrl}`;
+
+  // to return categorized product
+  if (url) {
+    const category = await Category.findOne({ url: url });
+    if (!category) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Category not found');
+    }
+    query.categoryId = category._id;
+    delete query.categoryUrl;
+  }
+
+  // query builder
+  const productsQuery = new QueryBuilder(
+    Product.find().populate({
+      path: 'categoryId',
+      select: 'name url',
+    }),
+    query,
+  )
     .search()
     .filter()
     .paginate()

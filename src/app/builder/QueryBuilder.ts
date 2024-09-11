@@ -1,4 +1,6 @@
 import { FilterQuery, Query, Types } from 'mongoose';
+import AppError from '../errors/AppError';
+import httpStatus from 'http-status';
 
 class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
@@ -38,19 +40,27 @@ class QueryBuilder<T> {
   }
 
   filter() {
-    const queryObj = { ...this.query }; // copy
+    const queryObj = { ...this.query }; // Copy the query object
 
-    // Filtering
+    // Fields to exclude from filtering
     const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-
     excludeFields.forEach((el) => delete queryObj[el]);
 
+    // Apply categoryId filter if it exists
     if (queryObj.categoryId) {
-      this.modelQuery = this.modelQuery.find({
-        categoryId: new Types.ObjectId(queryObj.categoryId as string),
-      } as FilterQuery<T>);
+      if (typeof queryObj.categoryId === 'string') {
+        queryObj.categoryId = new Types.ObjectId(queryObj.categoryId);
+      } else {
+      // Apply the categoryId filter directly
+        this.modelQuery = this.modelQuery.find({
+          categoryId: queryObj.categoryId,
+        } as FilterQuery<T>);
+      }
+      // Remove categoryId from the queryObj to prevent reapplying
+      delete queryObj.categoryId;
     }
-    
+
+    // Apply remaining filters
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
 
     return this;

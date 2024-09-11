@@ -4,7 +4,7 @@ import { TCategory } from './category.interface';
 const categorySchema = new Schema<TCategory>({
   name: { type: String, required: true, unique: true },
   image: { type: String, required: true },
-  url: { type: String, required: true },
+  url: { type: String, required: true ,  unique: true},
 });
 
 export const Category = model<TCategory>('Category', categorySchema);
