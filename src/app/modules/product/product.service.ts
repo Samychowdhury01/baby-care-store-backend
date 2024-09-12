@@ -22,9 +22,9 @@ const createProductIntoDB = async (payload: TProduct) => {
 
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   const url = `/${query.categoryUrl}`;
-
+  
   // to return categorized product
-  if (url) {
+  if (query.categoryUrl) {
     const category = await Category.findOne({ url: url });
     if (!category) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Category not found');

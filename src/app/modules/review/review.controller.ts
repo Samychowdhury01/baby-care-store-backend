@@ -5,7 +5,8 @@ import sendResponse from "../../utils/sendResponse"
 import httpStatus from "http-status"
 
 const getReviews = catchAsync(async (req:Request, res: Response) => {
-    const result = await ReviewServices.getReviewsFromDB()
+    const { id } = req.params
+    const result = await ReviewServices.getReviewsFromDB(id)
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

@@ -3,7 +3,7 @@ import { ReviewControllers } from "./review.controller";
 
 const router = Router();
 
-router.get('/', ReviewControllers.getReviews)
+router.get('/:id', ReviewControllers.getReviews)
 // create a review
 router.get('/', ReviewControllers.createReview)
 
