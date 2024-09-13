@@ -19,7 +19,11 @@ const orderSchema = new Schema<TOrder>({
     type: Number,
     required: true,
   },
-
+  products: {
+    type: [Schema.Types.ObjectId],
+    ref: 'Product',
+    required: true
+  },
   status: {
     type: String,
     enum: ['pending', 'delivered'],

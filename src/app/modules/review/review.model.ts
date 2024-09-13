@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import { TReview } from './review.interface';
 
 const reviewSchema = new Schema<TReview>({
-  name: {
+  userName: {
     type: String,
     required: true,
   },

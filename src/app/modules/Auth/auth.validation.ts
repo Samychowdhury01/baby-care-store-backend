@@ -19,10 +19,7 @@ const signupValidationSchema = z.object({
       required_error: 'Password is required',
       invalid_type_error: 'Password must be a string',
     }),
-    role: z
-      .enum([...role] as [string, ...string[]])
-      .optional()
-      .default('user'),
+    role: z.enum([...role] as [string, ...string[]]).optional(),
   }),
 });
 

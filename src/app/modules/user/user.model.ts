@@ -25,8 +25,8 @@ const userSchema = new Schema<TUser>(
       type: String,
       enum: {
         values: role,
-        default: 'user',
       },
+      default: 'user',
     },
   },
   {
@@ -45,7 +45,6 @@ userSchema.pre('save', async function (next) {
 userSchema.post('save', function (doc: any, next) {
   // Convert the document to an object and remove the fields
   delete doc._doc.password;
-  delete doc._doc.isDeleted;
 
   next();
 });
@@ -54,7 +53,6 @@ userSchema.post('save', function (doc: any, next) {
 userSchema.statics.isUserExist = async function (id: string) {
   const existingUser = await User.findOne({
     _id: id,
-    isDeleted: { $ne: true },
   });
   return existingUser;
 };

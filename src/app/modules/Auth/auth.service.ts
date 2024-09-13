@@ -19,7 +19,7 @@ const createUserIntoDB = async (payload: TUser) => {
 // login user using email and password
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.findOne({ email: payload.email });
-
+console.log(user);
   // check user exist or not
   if (!user) {
     throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid email or password');

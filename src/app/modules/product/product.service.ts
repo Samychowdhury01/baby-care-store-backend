@@ -60,6 +60,7 @@ const getSingleProductFromDB = async (id: string) => {
 
 const updateProductIntoDB = async (id: string, payload: Partial<TProduct>) => {
   const isProductExist = await Product.findById(id);
+  console.log(isProductExist);
   if (!isProductExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
   }

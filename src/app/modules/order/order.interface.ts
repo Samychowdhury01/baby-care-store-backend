@@ -5,5 +5,6 @@ export type TOrder = {
   userId: Types.ObjectId;
   totalAmount: number;
   quantity: number;
+  products : Types.ObjectId[]
   status?: 'pending' | 'delivered';
 };

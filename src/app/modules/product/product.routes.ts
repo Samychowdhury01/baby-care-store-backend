@@ -1,17 +1,19 @@
-import { Router } from "express";
-import { ProductControllers } from "./product.controller";
+import { Router } from 'express';
+import { ProductControllers } from './product.controller';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../Auth/auth.constant';
 
-const router = Router()
+const router = Router();
 
 // get all product
 router.get('/', ProductControllers.getProducts);
 // get create sale products
-router.post('/', ProductControllers.createProduct)
+router.post('/', auth(USER_ROLE.admin), ProductControllers.createProduct);
 // get product by id
 router.get('/:id', ProductControllers.getProductById);
 // update product Info
-router.put('/', ProductControllers.updateProduct);
+router.put('/:id', auth(USER_ROLE.admin), ProductControllers.updateProduct);
 // delete Product
-router.delete('/', ProductControllers.deleteProduct);
+router.delete('/:id', auth(USER_ROLE.admin), ProductControllers.deleteProduct);
 
-export const ProductRoutes = router
+export const ProductRoutes = router;
