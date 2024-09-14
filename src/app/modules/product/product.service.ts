@@ -6,7 +6,9 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import { Category } from '../category/category.model';
 
 const createProductIntoDB = async (payload: TProduct) => {
-  const isProductExist = await Product.findOne({ name: payload.name });
+  const isProductExist = await Product.findOne({
+    name: payload.name,
+  });
 
   if (isProductExist) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Product already exist');
@@ -22,7 +24,7 @@ const createProductIntoDB = async (payload: TProduct) => {
 
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   const url = `/${query.categoryUrl}`;
-  
+
   // to return categorized product
   if (query.categoryUrl) {
     const category = await Category.findOne({ url: url });

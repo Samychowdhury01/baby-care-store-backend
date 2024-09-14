@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { model, Schema } from 'mongoose';
 import { TProduct } from './product.interface';
@@ -26,13 +27,10 @@ const productSchema = new Schema<TProduct>(
       type: Boolean,
       default: false,
     },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
+    isDeleted: { type: Boolean, default: false },
   },
   {
-    timestamps: true
+    timestamps: true,
   },
 );
 
@@ -41,12 +39,15 @@ productSchema.post('save', async function (doc: any, next) {
   next();
 });
 // pre hook to filter out deleted document
+
 productSchema.pre('find', function (next) {
+  // @ts-ignore
   this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
   next();
 });
 // pre hook to filter out deleted document
 productSchema.pre('findOne', function (next) {
+  // @ts-ignore
   this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
   next();
 });
